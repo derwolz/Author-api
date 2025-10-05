@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ValkyrieX SSO Test Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 440px;
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .logo {
+            font-size: 48px;
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            color: #1a202c;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .config-section {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .config-section h3 {
+            color: #2d3748;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            color: #4a5568;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-google {
+            background: white;
+            color: #3c4043;
+            border: 1px solid #dadce0;
+        }
+
+        .btn-google:hover {
+            background: #f8f9fa;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .divider {
+            text-align: center;
+            margin: 24px 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 16px;
+            color: #718096;
+            font-size: 14px;
+            position: relative;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .alert-success {
+            background: #f0fdf4;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .response-box {
+            background: #1a202c;
+            color: #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .small-text {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 8px;
+        }
+
+        .toggle-config {
+            background: none;
+            border: none;
+            color: #667eea;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: underline;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🚀</div>
+            <h1>ValkyrieX SSO</h1>
+            <p class="subtitle">Test Authentication System</p>
+        </div>
+
+        <button class="toggle-config" onclick="toggleConfig()">⚙️ Configuration</button>
+
+        <div class="config-section" id="configSection" style="display: none;">
+            <h3>API Configuration</h3>
+            <div class="form-group">
+                <label>API Base URL</label>
+                <input type="text" id="apiUrl" value="http://localhost:8000" placeholder="http://localhost:8000">
+            </div>
+            <div class="form-group">
+                <label>Site API Key</label>
+                <input type="text" id="apiKey" placeholder="bk_xxxxxxxxxxxxx">
+                <p class="small-text">Get this from Django Admin → Book Sites</p>
+            </div>
+        </div>
+
+        <div id="alertBox"></div>
+
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="email" placeholder="user@example.com">
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="password" placeholder="Enter password">
+        </div>
+
+        <div class="form-group">
+            <label>Referral Code (Optional)</label>
+            <input type="text" id="referralCode" placeholder="Enter referral code">
+        </div>
+
+        <button class="btn btn-primary" onclick="loginWithPassword()">
+            🔐 Sign In / Sign Up
+        </button>
+
+        <div class="divider">
+            <span>OR</span>
+        </div>
+
+        <button class="btn btn-google" onclick="showGoogleInfo()">
+            <svg width="18" height="18" viewBox="0 0 18 18">
+                <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/>
+                <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/>
+                <path fill="#FBBC05" d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707 0-.593.102-1.17.282-1.709V4.958H.957C.347 6.173 0 7.548 0 9c0 1.452.348 2.827.957 4.042l3.007-2.335z"/>
+                <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/>
+            </svg>
+            Continue with Google
+        </button>
+
+        <div id="responseBox" style="margin-top: 24px; display: none;">
+            <h3 style="margin-bottom: 12px; font-size: 16px;">Response:</h3>
+            <div class="response-box" id="response"></div>
+        </div>
+    </div>
+
+    <script>
+        function toggleConfig() {
+            const section = document.getElementById('configSection');
+            section.style.display = section.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function showAlert(message, type = 'error') {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+            setTimeout(() => {
+                alertBox.innerHTML = '';
+            }, 5000);
+        }
+
+        function showResponse(data) {
+            const responseBox = document.getElementById('responseBox');
+            const response = document.getElementById('response');
+            response.textContent = JSON.stringify(data, null, 2);
+            responseBox.style.display = 'block';
+        }
+
+        async function loginWithPassword() {
+            const apiUrl = document.getElementById('apiUrl').value;
+            const apiKey = document.getElementById('apiKey').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const referralCode = document.getElementById('referralCode').value;
+
+            if (!apiKey) {
+                showAlert('Please configure your API Key in the settings');
+                toggleConfig();
+                return;
+            }
+
+            if (!email || !password) {
+                showAlert('Please enter email and password');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${apiUrl}/api/auth/login/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': apiKey
+                    },
+                    body: JSON.stringify({
+                        email,
+                        password,
+                        referral_code: referralCode || null
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    showAlert(`Login successful! ${data.user.is_new_user ? 'New account created!' : 'Welcome back!'}`, 'success');
+                    showResponse(data);
+                    
+                    // Store tokens in memory (not localStorage as per instructions)
+                    window.currentSession = {
+                        accessToken: data.access_token,
+                        refreshToken: data.refresh_token,
+                        user: data.user
+                    };
+                } else {
+                    showAlert(data.error || 'Login failed');
+                    showResponse(data);
+                }
+            } catch (error) {
+                showAlert('Network error: ' + error.message);
+                console.error('Login error:', error);
+            }
+        }
+
+        function showGoogleInfo() {
+            showAlert('Google SSO Test: This requires implementing the Google Sign-In button with actual Google OAuth. For testing, you would need to:\n\n1. Set up Google OAuth credentials\n2. Include Google Sign-In SDK\n3. Get a google_token from the OAuth flow\n4. POST to /api/auth/google-login/ with the token', 'error');
+            
+            const exampleCode = {
+                note: "Example Google SSO Request",
+                endpoint: `${document.getElementById('apiUrl').value}/api/auth/google-login/`,
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-API-Key": "your_api_key"
+                },
+                body: {
+                    google_token: "google_oauth_token_here",
+                    referral_code: "optional_referral_code"
+                }
+            };
+            
+            showResponse(exampleCode);
+        }
+
+        // Handle Enter key
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                loginWithPassword();
+            }
+        });
+    </script>
+</body>
+</html>
