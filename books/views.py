@@ -7,6 +7,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.core.cache import cache
+from django.shortcuts import render
 from django.utils import timezone
 from datetime import timedelta
 import secrets
@@ -15,6 +16,11 @@ from django.conf import settings
 from .models import (UserProfile, Book, UserBook, BookSite, UserSiteActivity, 
                     CreditTransaction, AuthCode)
 from .serializers import UserProfileSerializer, BookSerializer, UserBookSerializer
+
+# Add template view at the top
+def index(request):
+    """Render the SSO test page"""
+    return render(request, 'index.html')
 
 class UserProfileViewSet(viewsets.ModelViewSet):
     serializer_class = UserProfileSerializer
